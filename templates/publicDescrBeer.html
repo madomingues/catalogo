@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerin.html" %}
+
+
+<section class="main">
+    <h1>{{cerveja.name}}</h1>
+
+    <p><strong>Nome: </strong> {{cerveja.name}}</p>
+    <p><strong>Família: </strong> {{cerveja.familia}}</p>
+    <p><strong>Tipo: </strong>{{cerveja.tipo}}</p>
+    <p><strong>Temperatura: </strong>{{cerveja.temperatura}}</p>
+    <p><strong>Cor: </strong> {{cerveja.cor}}</p>
+    <p><strong>Descrição: </strong></p>
+    <p>{{cerveja.descricao}}</p>
+        
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerin.html" %}
+
+<section class="main">
+
+    <h1>{{estilo.name}}</h1>
+    
+    <p>{{estilo.descricao}}</p>
+
+    <div class="space"></div>
+    
+        {%for cerveja in cervejas%}
+
+    <div class= "beer-list">
+        <a href="{{url_for('descrBeer',estilo_id=estilo.id,cerveja_id=cerveja.id)}}"><h3>{{cerveja.name}}</h3></a>
+    </div>
+    
+        {%endfor%}
+    
+</section>
+{% endblock %}

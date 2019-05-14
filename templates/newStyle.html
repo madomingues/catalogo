@@ -1,0 +1,33 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerout.html" %}
+
+<section class="main">
+
+    <h1>Novo Estilo de Cerveja</h1>
+    <div class="form">
+        <form action="{{url_for('newStyle')}}" method="POST">
+            <div class="form-group">
+                <div>
+                <label for="name">Nome:</label>
+                </div>
+                <input type="text" maxlength="100" name="name">
+            </div>
+            <div class="form-group"> 
+                <div>
+                <label for="descricao">Descrição:</label>
+                </div>
+                <textarea  maxlength="600" rows="4" name="descricao"></textarea>
+            </div> 
+            <div class="form-group"> 
+                <button type="submit" name="Adicionar">Adicionar</button>
+
+                <a href="{{url_for('showStyles')}}">
+                    <button type="button">Cancelar</button>
+                </a>
+            </div> 
+        </form>
+    </div>
+   
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerin.html" %}
+
+<section class="main">      
+    {% for estilo in estilos %}
+    <a href="{{url_for('showBeers', estilo_id = estilo.id)}}">
+        <h3>{{estilo.name}}</h3>
+    </a>
+    {%endfor%}
+</section>
+{% endblock %}

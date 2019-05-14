@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Anton|Karla" rel="stylesheet">
+    <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles.css')}}"> 
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="186669249441-9229j3eje8vqs8ceqnvlla8f2i5bm0ki.apps.googleusercontent.com">
+    
+  </head>
+  <body>
+    <section class="main">
+      <div id = "result"></div>
+      <div class="signin">
+        <h3>Gostaria de se conectar a 1000 cervejas?</h3>
+        <div class="but">
+          <span class="g-signin2" data-onsuccess="onSignIn" id="signinButton"></span>
+        </div>
+      </div>
+      
+      
+  </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script>
+      function onSignIn(googleUser){
+        var id_token = googleUser.getAuthResponse().id_token;
+        $.ajax({
+          type:'POST',
+          url: '/gconnect',
+          data: JSON.stringify({id_token:id_token}),
+          contentType:'application/json; charset = utf-8',
+          success: function(result){
+            if (result){
+            $('#result').html(result + '</br>Redirecionando...')
+            setTimeout(function() {
+              window.location.href = "/1000cervejas";
+              }, 4000);
+            } else if (googleUser['error']){
+                console.log('Ocorreu um erro:' + googleUser['error']);  
+              } else {
+              $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+              }
+            }
+        });
+      }
+
+    </script>
+ 
+  </body>
+</html>

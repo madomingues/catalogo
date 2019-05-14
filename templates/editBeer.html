@@ -1,0 +1,63 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerout.html" %}
+
+<section class="main">
+
+    <h1>Editar {{cerveja.name}}</h1>
+
+    <div class="form">
+        <form action="{{url_for('editBeer',estilo_id=estilo.id,cerveja_id=cerveja.id)}}" method="POST">
+            <div class="form-group">
+                <div>
+                <label for="name">Name:</label>
+                </div>
+                <input type="text" maxlength="100" name="name" placeholder="{{cerveja.name}}">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="preco">Preço:</label>
+                </div>
+                <input type="text" maxlength="10" name="preco" placeholder="{{cerveja.preco}}">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="familia">Família:</label>
+                </div>
+                <input type="text" maxlength="100" name="familia" placeholder="{{cerveja.familia}}">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="tipo">Tipo:</label>
+                </div>
+                <input type="text" maxlength="100" name="tipo" placeholder="{{cerveja.tipo}}">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="temperatura">Temperatura:</label>
+                </div>
+                <input type="text" maxlength="10" name="temperatura" placeholder="{{cerveja.temperatura}}">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="cor">Cor:</label>
+                </div>
+                <input type="text" maxlength="100" name="cor" placeholder="{{cerveja.cor}}">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="descricao">Descrição:</label>
+                </div>
+                <textarea  maxlength="500" rows="4" name="descricao" placeholder="{{cerveja.descricao}}"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submit" name="Editar">Editar</button>
+                <a href="{{url_for('showBeers',estilo_id = estilo.id)}}">
+                    <button type="button">Cancelar</button>
+                </a>
+            </div>
+        </form>
+    </div> 
+</section>
+
+{% endblock %}

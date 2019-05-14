@@ -1,0 +1,63 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerout.html" %}
+
+<section class="main">
+    <h1>Adicionar novo {{estilo.name}}</h1>
+
+    <div class="form">
+        <form action="{{url_for('newBeer',estilo_id=estilo.id)}}" method="POST">
+            <div class="form-group">
+                <div>
+                <label for="name">Name:</label>
+                </div>
+                <input type="text" maxlength="100" name="name">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="preco">Preço:</label>
+                </div>
+                <input type="text" maxlength="10" name="preco">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="familia">Família:</label>
+                </div>
+                <input type="text" maxlength="100" name="familia">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="tipo">Tipo:</label>
+                </div>
+                <input type="text" maxlength="100" name="tipo" >
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="temperatura">Temperatura:</label>
+                </div>
+                <input type="text" maxlength="10" name="temperatura">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="cor">Cor:</label>
+                </div>
+                <input type="text" maxlength="100" name="cor">
+            </div>
+            <div class="form-group">
+                <div>
+                <label for="descricao">Descrição:</label>
+                </div>
+                <textarea  maxlength="500" rows="4" name="descricao"></textarea>
+            </div>   
+            <div class="form-group">
+                <button type="submit" id="submit" name="Adicionar" >Adicionar</button>
+
+                <a href="{{url_for('showBeers',estilo_id = estilo.id)}}">
+                    <button type="button">Cancelar</button>
+                </a>
+            </div>
+        </form>
+    </div>  
+</section>
+
+{% endblock %}

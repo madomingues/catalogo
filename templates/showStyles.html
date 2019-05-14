@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerout.html" %}
+<section class="main">
+    <div>
+        <a href="{{url_for('newStyle')}}">
+            <button type="button">Adicionar estilo</button>
+        </a>
+    </div>
+
+    <div class = 'flash'>
+
+            {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        
+      <ul>
+      {% for message in messages %}
+          <li> <strong> {{ message }} </strong> </li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
+    
+
+    {% for estilo in estilos %}
+    <a href="{{url_for('showBeers', estilo_id = estilo.id)}}">
+        <h3>{{estilo.name}}</h3>
+    </a>
+    {%endfor%}
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+<header>
+<div class="top-menu">
+     <a href="{{url_for('showStyles')}}" class="home">
+        Home
+    </a>
+    
+    <a href="{{url_for('gdisconnect')}}" onclick="signOut();" class="login">
+      Logout
+    </a>
+
+</div>
+
+<div class=" divider"></div>
+
+<div class="banner"> 
+    <h1>1000 cervejas</h1>
+</div>
+</header>
+
+<script>
+
+   function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User has sign out');
+    })
+  }
+      
+</script>

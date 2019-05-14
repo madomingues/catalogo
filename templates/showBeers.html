@@ -1,0 +1,53 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerout.html" %}
+
+<section class="main">
+
+    <h1>{{estilo.name}}</h1>
+    
+    <p>{{estilo.descricao}}</p>
+
+    <div class = 'flash'>
+            {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        
+      <ul>
+      {% for message in messages %}
+          <li> <strong> {{ message }} </strong> </li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+    
+    </div>
+    
+    <div>
+        <a href="{{url_for('newStyle')}}">
+            <button class="btn btn-default" id="new-style">Adicionar estilo.</button>
+        </a>
+        <a href="{{url_for('editStyle',estilo_id=estilo.id)}}">
+            <button class="btn btn-default" id="edit-style"> Editar estilo.</button>
+        </a>
+        <a href="{{url_for('delStyle',estilo_id=estilo.id)}}">
+            <button class="btn btn-default" id="del-style">Deletar estilo.</button>
+        </a>
+        <a href="{{url_for('newBeer',estilo_id=estilo.id)}}">
+            <button class="btn btn-default" id="new-beer">Adicionar Cerveja</button> 
+        </a>
+    </div>
+
+    <div class="space"></div>
+    
+        {%for cerveja in cervejas%}
+
+    <div class= "beer-list">
+        <a href="{{url_for('descrBeer',estilo_id=estilo.id,cerveja_id=cerveja.id)}}"><h3>{{cerveja.name}}</h3></a>
+        <a href="{{url_for('editBeer',estilo_id=estilo.id,cerveja_id=cerveja.id)}}">Editar</a>|
+        <a href="{{url_for('deleteBeer',estilo_id=estilo.id,cerveja_id=cerveja.id)}}">Deletar</a>
+    </div>
+    
+        {%endfor%}
+    
+</section>
+{% endblock %}

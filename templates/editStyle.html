@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerout.html" %}
+
+<section class="main">
+    <h1>Editar {{estilo.name}}</h1>
+        <div class="form">
+            <form action="{{url_for('editStyle',estilo_id=estilo.id)}}" method="POST">
+                <div class="form-group">
+                    <div>
+                    <label for="name">Name:</label>
+                    </div>
+                    <input type="text" maxlength="100" name="name" placeholder="{{estilo.name}}">
+                </div>
+                <div class="form-group">
+                    <div>
+                    <label for="descricao">Descrição:</label>
+                    </div>
+                    <textarea  maxlength="600" rows="4" name="descricao" placeholder="{{estilo.descricao}}"></textarea>
+                </div>
+                <div>
+                    <button type="submit" id="edit" name="Editar">Editar</button>
+                    <a href="{{url_for('showStyles')}}">
+                        <button type="button">Cancelar</button>
+                    </a>
+                </div>
+            </form>
+        </div>
+</section>
+{% endblock %}

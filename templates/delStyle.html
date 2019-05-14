@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "headerout.html" %}
+
+<section class="main">
+
+    <h3>Você tem certeza que gostaria de deletar {{estilo.name}}?</h3>
+    
+    <form action="{{url_for('delStyle',estilo_id=estilo.id)}}", method="POST">
+    <button type="submit">Deletar</button>
+    <a href="{{url_for('showStyles')}}">
+        <button type="button" >Cancelar</button>
+    </a>
+    </form>
+    
+</section>
+
+{% endblock %}
