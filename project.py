@@ -26,7 +26,6 @@ session = DBSession()
 
 # Rotas para login
 @app.route('/login')
-""" Página de login. """
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.
                     digits) for x in xrange(32))
@@ -35,7 +34,7 @@ def showLogin():
 
 
 @app.route('/gconnect', methods=['GET', 'POST'])
-""" Acessa dados do Google Api de Sign in e coloca na login session """
+
 def gconnect():
     data = request.json
     token = data.get("id_token")
@@ -91,7 +90,7 @@ def getUserId(email):
 
 # Rota para logout
 @app.route('/gdisconnect', methods=['GET', 'POST'])
-""" Disconect do google API de Sign in. """
+
 def gdisconnect():
     del login_session['username']
     del login_session['email']
@@ -102,7 +101,6 @@ def gdisconnect():
 # Rotas para o site e CRUD
 @app.route('/')
 @app.route('/1000cervejas')
-""" Página Principal do catálogo. """
 def showStyles():
     estilos = session.query(BeerStyle).order_by(asc(BeerStyle.name))
     if 'username' not in login_session:
@@ -112,7 +110,6 @@ def showStyles():
 
 
 @app.route('/1000cervejas/new', methods=['GET', 'POST'])
-""" Página para adicionar novos estilos de cervejas. """
 def newStyle():
     if 'username' not in login_session:
         return render_template('login.html')
@@ -129,7 +126,6 @@ def newStyle():
 
 
 @app.route('/1000cervejas/<int:estilo_id>/edit', methods=['GET', 'POST'])
-""" Página para editar um estilo de cerveja. """
 def editStyle(estilo_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -154,7 +150,6 @@ def editStyle(estilo_id):
 
 
 @app.route('/1000cervejas/<int:estilo_id>/delete', methods=['GET', 'POST'])
-""" Página para deletar um estilo de cerveja. """
 def delStyle(estilo_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -174,7 +169,6 @@ def delStyle(estilo_id):
 
 
 @app.route('/1000cervejas/<int:estilo_id>/beers')
-""" Página que mostra as cervejas catalogadas separadas por estilo. """
 def showBeers(estilo_id):
     estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
     cervejas = session.query(Cerveja).filter_by(estilo_id=estilo_id).all()
@@ -187,7 +181,6 @@ def showBeers(estilo_id):
 
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/new', methods=['GET', 'POST'])
-""" Página para adicionar nova cerveja. """
 def newBeer(estilo_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -213,7 +206,6 @@ def newBeer(estilo_id):
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/<int:cerveja_id>/edit',
            methods=['GET', 'POST'])
-""" Página para editar cerveja. """
 def editBeer(estilo_id, cerveja_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -250,7 +242,6 @@ def editBeer(estilo_id, cerveja_id):
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/<int:cerveja_id>/delete',
            methods=['GET', 'POST'])
-""" Página para deletar cerveja. """
 def deleteBeer(estilo_id, cerveja_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -272,7 +263,6 @@ def deleteBeer(estilo_id, cerveja_id):
 
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/<int:cerveja_id>/descricao')
-""" Página para descrever cervejas. """
 def descrBeer(estilo_id, cerveja_id):
     estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
     beerDescr = session.query(Cerveja).filter_by(id=cerveja_id).one()
