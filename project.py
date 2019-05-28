@@ -33,8 +33,8 @@ def showLogin():
     return render_template('login.html', STATE=state)
 
 
+# Autenticacao com o google
 @app.route('/gconnect', methods=['GET', 'POST'])
-
 def gconnect():
     data = request.json
     token = data.get("id_token")
@@ -63,9 +63,8 @@ def gconnect():
     flash("Conectado como %s" % login_session['username'])
     return output
 
+
 # Helpers para adicionar novos usuarios no banco de dados
-
-
 def createUser(login_session):
     newUser = User(id=login_session['id'], username=login_session['username'],
                    email=login_session['email'])
@@ -90,7 +89,6 @@ def getUserId(email):
 
 # Rota para logout
 @app.route('/gdisconnect', methods=['GET', 'POST'])
-
 def gdisconnect():
     del login_session['username']
     del login_session['email']
@@ -101,6 +99,7 @@ def gdisconnect():
 # Rotas para o site e CRUD
 @app.route('/')
 @app.route('/1000cervejas')
+# Exibe lista de estilos
 def showStyles():
     estilos = session.query(BeerStyle).order_by(asc(BeerStyle.name))
     if 'username' not in login_session:
@@ -110,6 +109,7 @@ def showStyles():
 
 
 @app.route('/1000cervejas/new', methods=['GET', 'POST'])
+# Adiciona novos estilos
 def newStyle():
     if 'username' not in login_session:
         return render_template('login.html')
@@ -126,6 +126,7 @@ def newStyle():
 
 
 @app.route('/1000cervejas/<int:estilo_id>/edit', methods=['GET', 'POST'])
+# Edita estilo existente caso seja o usuario logado que criou
 def editStyle(estilo_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -150,6 +151,7 @@ def editStyle(estilo_id):
 
 
 @app.route('/1000cervejas/<int:estilo_id>/delete', methods=['GET', 'POST'])
+# Deleta Estilo de cerveja caso o usuario logado tenha criado
 def delStyle(estilo_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -169,6 +171,7 @@ def delStyle(estilo_id):
 
 
 @app.route('/1000cervejas/<int:estilo_id>/beers')
+# Lista as cervejas dentro de cada estilo
 def showBeers(estilo_id):
     estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
     cervejas = session.query(Cerveja).filter_by(estilo_id=estilo_id).all()
@@ -181,6 +184,7 @@ def showBeers(estilo_id):
 
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/new', methods=['GET', 'POST'])
+# Cria uma nova cerveja
 def newBeer(estilo_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -206,6 +210,7 @@ def newBeer(estilo_id):
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/<int:cerveja_id>/edit',
            methods=['GET', 'POST'])
+# Edita uma cerveja caso o usario logado tenha criado
 def editBeer(estilo_id, cerveja_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -242,6 +247,7 @@ def editBeer(estilo_id, cerveja_id):
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/<int:cerveja_id>/delete',
            methods=['GET', 'POST'])
+# deleta uma cerveja caso usuario logado tenha criado
 def deleteBeer(estilo_id, cerveja_id):
     if 'username' not in login_session:
         return render_template('login.html')
@@ -263,6 +269,7 @@ def deleteBeer(estilo_id, cerveja_id):
 
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/<int:cerveja_id>/descricao')
+# Exibe detalhes da cerveja selecionada
 def descrBeer(estilo_id, cerveja_id):
     estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
     beerDescr = session.query(Cerveja).filter_by(id=cerveja_id).one()
@@ -274,25 +281,25 @@ def descrBeer(estilo_id, cerveja_id):
                                cerveja=beerDescr)
 
 
-#Rotas endpoint JSON
+# Rotas endpoint JSON
 @app.route('/1000cervejas/JSON')
 def jsonStyles():
     estilos = session.query(BeerStyle)
-    return jsonify(estilos = [e.serialize for e in estilos])
+    return jsonify(estilos=[e.serialize for e in estilos])
 
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/JSON')
 def jsonBeers(estilo_id):
     estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
     cervejas = session.query(Cerveja).filter_by(estilo_id=estilo_id).all()
-    return jsonify(cervejas = [c.serialize for c in cervejas])
+    return jsonify(cervejas=[c.serialize for c in cervejas])
 
 
 @app.route('/1000cervejas/<int:estilo_id>/beers/<int:cerveja_id>/JSON')
-def jsonDescrBeer(estilo_id,cerveja_id):
+def jsonDescrBeer(estilo_id, cerveja_id):
     estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
     beerDescr = session.query(Cerveja).filter_by(id=cerveja_id).one()
-    return jsonify(beerDescr = [beerDescr.serialize])
+    return jsonify(beerDescr=[beerDescr.serialize])
 
 
 if __name__ == '__main__':
