@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!usr/bin/env python
 from flask import Flask, render_template, request
 from flask import redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
@@ -55,6 +55,7 @@ def gconnect():
     login_session['username'] = idinfo['name']
     login_session['email'] = idinfo['email']
     login_session['id'] = userid
+    login_session['user_id'] = user_id
 
     output = ''
     output += '<h1>Welcome, '
@@ -133,9 +134,9 @@ def editStyle(estilo_id):
     else:
         editEstilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         if editEstilo.user_id != login_session['user_id']:
-            return """<script> function userError() {alert('Voce nao esta
-            autorizado a editar esse estilo);}</script><body onload =
-           'userError()'>"""
+            return "<script> function userError() {alert('Voce nao esta\
+                    autorizado a editar esse estilo);}</script><body\
+                    onload ='userError()'>"
         if request.method == 'POST':
             if request.form['name']:
                 editEstilo.name = request.form['name']
@@ -158,9 +159,9 @@ def delStyle(estilo_id):
     else:
         delEstilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         if delEstilo.user_id != login_session['user_id']:
-            return """<script> function userError() {alert('Voce nao esta
-            autorizado a deletar esse estilo);}</script><body onload =
-            'userError()'>"""
+            return "<script> function userError() {alert('Voce nao esta\
+                    autorizado a deletar esse estilo);}</script><body\
+                    onload ='userError()'>"
         if request.method == 'POST':
             session.delete(delEstilo)
             session.commit()
@@ -218,9 +219,9 @@ def editBeer(estilo_id, cerveja_id):
         estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         editedBeer = session.query(Cerveja).filter_by(id=cerveja_id).one()
         if editedBeer.user_id != login_session['user_id']:
-            return """<script> function userError() {alert('Voce nao esta
-            autorizado a editar essa cerveja);}</script><body onload =
-            'userError()'>"""
+            return "<script> function userError() {alert('Voce nao esta\
+                    autorizado a editar essa cerveja);}</script><body\
+                    onload='userError()'>"
         if request.method == 'POST':
             if request.form['name']:
                 editedBeer.name = request.form['name']
@@ -255,9 +256,9 @@ def deleteBeer(estilo_id, cerveja_id):
         estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         delBeer = session.query(Cerveja).filter_by(id=cerveja_id).one()
         if delBeer.user_id != login_session['user_id']:
-            return """<script> function userError() {alert('Voce nao esta
-            autorizado a editar esse estilo);}</script><body onload =
-            'userError()'>"""
+            return "<script> function userError() {alert('Voce nao esta \
+                    autorizado a editar esse estilo);}</script><body \
+                    onload ='userError()'>"
         if request.method == 'POST':
             session.delete(delBeer)
             session.commit()
