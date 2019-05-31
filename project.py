@@ -48,7 +48,7 @@ def gconnect():
     except ValueError:
         pass
 
-    user_id = session.query(User).filter_by(email=idinfo['email'])
+    user_id = session.query(User).filter_by(email=idinfo['email']).all()
     if user_id is None:
         createUser(login_session['email'])
 
@@ -84,7 +84,7 @@ def getUserId(email):
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
-    except:
+    except Exception:
         return None
 
 
@@ -117,7 +117,8 @@ def newStyle():
     else:
         if request.method == 'POST':
             novoEstilo = BeerStyle(name=request.form['name'],
-                                   descricao=request.form['descricao'])
+                                   descricao=request.form['descricao'],
+                                   user_id=login_session['user_id'])
             session.add(novoEstilo)
             session.commit()
             flash('%s adicionado com sucesso' % novoEstilo.name)
@@ -199,7 +200,8 @@ def newBeer(estilo_id):
                               temperatura=request.form['temperatura'],
                               cor=request.form['cor'],
                               tipo=request.form['tipo'],
-                              estilo_id=estilo_id)
+                              estilo_id=estilo_id,
+                              user_id=login_session['user_id'])
             session.add(cerveja)
             session.commit()
             flash('%s adicionado com sucesso' % cerveja.name)

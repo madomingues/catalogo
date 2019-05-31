@@ -13,6 +13,14 @@ class User(Base):
     username = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
 
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email
+        }
+
 
 class BeerStyle(Base):
     __tablename__ = 'estilo'
