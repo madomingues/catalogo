@@ -118,7 +118,7 @@ def newStyle():
         if request.method == 'POST':
             novoEstilo = BeerStyle(name=request.form['name'],
                                    descricao=request.form['descricao'],
-                                   user_id=login_session['user_id'])
+                                   user_id=login_session['id'])
             session.add(novoEstilo)
             session.commit()
             flash('%s adicionado com sucesso' % novoEstilo.name)
@@ -134,7 +134,7 @@ def editStyle(estilo_id):
         return render_template('login.html')
     else:
         editEstilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
-        if editEstilo.user_id != login_session['user_id']:
+        if editEstilo.user_id != login_session['id']:
             return "<script> function userError() {alert('Voce nao esta\
                     autorizado a editar esse estilo);}</script><body\
                     onload ='userError()'>"
@@ -159,7 +159,7 @@ def delStyle(estilo_id):
         return render_template('login.html')
     else:
         delEstilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
-        if delEstilo.user_id != login_session['user_id']:
+        if delEstilo.user_id != login_session['id']:
             return "<script> function userError() {alert('Voce nao esta\
                     autorizado a deletar esse estilo);}</script><body\
                     onload ='userError()'>"
@@ -201,7 +201,7 @@ def newBeer(estilo_id):
                               cor=request.form['cor'],
                               tipo=request.form['tipo'],
                               estilo_id=estilo_id,
-                              user_id=login_session['user_id'])
+                              user_id=login_session['id'])
             session.add(cerveja)
             session.commit()
             flash('%s adicionado com sucesso' % cerveja.name)
@@ -220,7 +220,7 @@ def editBeer(estilo_id, cerveja_id):
     else:
         estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         editedBeer = session.query(Cerveja).filter_by(id=cerveja_id).one()
-        if editedBeer.user_id != login_session['user_id']:
+        if editedBeer.user_id != login_session['id']:
             return "<script> function userError() {alert('Voce nao esta\
                     autorizado a editar essa cerveja);}</script><body\
                     onload='userError()'>"
@@ -257,7 +257,7 @@ def deleteBeer(estilo_id, cerveja_id):
     else:
         estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         delBeer = session.query(Cerveja).filter_by(id=cerveja_id).one()
-        if delBeer.user_id != login_session['user_id']:
+        if delBeer.user_id != login_session['id']:
             return "<script> function userError() {alert('Voce nao esta \
                     autorizado a editar esse estilo);}</script><body \
                     onload ='userError()'>"
