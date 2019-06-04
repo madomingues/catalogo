@@ -47,15 +47,17 @@ def gconnect():
         userid = idinfo['sub']
     except ValueError:
         pass
+    login_session['id'] = userid
 
-    user_id = session.query(User).filter_by(email=idinfo['email']).all()
+
+    user_id = getUserId(idinfo['email'])
     if user_id is None:
-        createUser(login_session['email'])
-
+        createUser(login_session)
+    login_session['user_id'] = user_id
+    
     login_session['username'] = idinfo['name']
     login_session['email'] = idinfo['email']
-    login_session['id'] = userid
-    login_session['user_id'] = user_id
+
 
     output = ''
     output += '<h1>Welcome, '
@@ -67,7 +69,7 @@ def gconnect():
 
 # Helpers para adicionar novos usuarios no banco de dados
 def createUser(login_session):
-    newUser = User(id=login_session['id'], username=login_session['username'],
+    newUser = User(username=login_session['username'],
                    email=login_session['email'])
     session.add(newUser)
     session.commit()
@@ -116,9 +118,11 @@ def newStyle():
         return render_template('login.html')
     else:
         if request.method == 'POST':
+            if 'user_id' not in login_session and 'email' in login_session:
+                login_session['user_id'] = getUserId(login_session['email'])
             novoEstilo = BeerStyle(name=request.form['name'],
                                    descricao=request.form['descricao'],
-                                   user_id=login_session['id'])
+                                   user_id=login_session['user_id'])
             session.add(novoEstilo)
             session.commit()
             flash('%s adicionado com sucesso' % novoEstilo.name)
@@ -134,10 +138,8 @@ def editStyle(estilo_id):
         return render_template('login.html')
     else:
         editEstilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
-        if editEstilo.user_id != login_session['id']:
-            return "<script> function userError() {alert('Voce nao esta\
-                    autorizado a editar esse estilo);}</script><body\
-                    onload ='userError()'>"
+        if editEstilo.user_id != login_session['user_id']:
+            return "<script> function userError() {alert('Voce nao esta autorizado a editar esse estilo);}</script><body onload ='userError()'>" #noqa
         if request.method == 'POST':
             if request.form['name']:
                 editEstilo.name = request.form['name']
@@ -159,10 +161,8 @@ def delStyle(estilo_id):
         return render_template('login.html')
     else:
         delEstilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
-        if delEstilo.user_id != login_session['id']:
-            return "<script> function userError() {alert('Voce nao esta\
-                    autorizado a deletar esse estilo);}</script><body\
-                    onload ='userError()'>"
+        if delEstilo.user_id != login_session['user_id']:
+            return "<script> function userError() {alert('Voce nao esta autorizado a deletar esse estilo);}</script><body onload ='userError()'>" #noqa
         if request.method == 'POST':
             session.delete(delEstilo)
             session.commit()
@@ -193,6 +193,8 @@ def newBeer(estilo_id):
     else:
         estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         if request.method == 'POST':
+            if 'user_id' not in login_session and 'email' in login_session:
+                login_session['user_id'] = getUserId(login_session['email'])
             cerveja = Cerveja(name=request.form['name'],
                               descricao=request.form['descricao'],
                               preco=request.form['preco'],
@@ -201,7 +203,7 @@ def newBeer(estilo_id):
                               cor=request.form['cor'],
                               tipo=request.form['tipo'],
                               estilo_id=estilo_id,
-                              user_id=login_session['id'])
+                              user_id=login_session['user_id'])
             session.add(cerveja)
             session.commit()
             flash('%s adicionado com sucesso' % cerveja.name)
@@ -220,10 +222,8 @@ def editBeer(estilo_id, cerveja_id):
     else:
         estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         editedBeer = session.query(Cerveja).filter_by(id=cerveja_id).one()
-        if editedBeer.user_id != login_session['id']:
-            return "<script> function userError() {alert('Voce nao esta\
-                    autorizado a editar essa cerveja);}</script><body\
-                    onload='userError()'>"
+        if editedBeer.user_id != login_session['user_id']:
+            return "<script> function userError() {alert('Voce nao esta autorizado a editar essa cerveja);}</script><body onload='userError()'>" #noqa
         if request.method == 'POST':
             if request.form['name']:
                 editedBeer.name = request.form['name']
@@ -257,10 +257,8 @@ def deleteBeer(estilo_id, cerveja_id):
     else:
         estilo = session.query(BeerStyle).filter_by(id=estilo_id).one()
         delBeer = session.query(Cerveja).filter_by(id=cerveja_id).one()
-        if delBeer.user_id != login_session['id']:
-            return "<script> function userError() {alert('Voce nao esta \
-                    autorizado a editar esse estilo);}</script><body \
-                    onload ='userError()'>"
+        if delBeer.user_id != login_session['user_id']:
+            return "<script> function userError() {alert('Voce nao esta autorizado a editar esse estilo);}</script><body onload ='userError()'>" #noqa
         if request.method == 'POST':
             session.delete(delBeer)
             session.commit()
