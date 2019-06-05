@@ -49,15 +49,13 @@ def gconnect():
         pass
     login_session['id'] = userid
 
+    login_session['username'] = idinfo['name']
+    login_session['email'] = idinfo['email']
 
     user_id = getUserId(idinfo['email'])
     if user_id is None:
         createUser(login_session)
     login_session['user_id'] = user_id
-    
-    login_session['username'] = idinfo['name']
-    login_session['email'] = idinfo['email']
-
 
     output = ''
     output += '<h1>Welcome, '
